@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Food Blog</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      #leftside {
+        float: left;
+        width: 30%;
+        min-height: 1490px;
+        background-color: rgb(77, 192, 154);
+      }
+      #rightside {
+        float: left;
+        width: 70%;
+        min-height: 1490px;
+        background-color: rgb(238, 226, 192);
+        position: relative;
+      }
+      #container {
+        background-color: rgba(255, 255, 255, 0.85);
+        position: absolute;
+        top: 15%;
+        left: 15%;
+        min-width: 1100px;
+        min-height: 1350px;
+        border-radius: 0.7em;
+      }
+      header {
+        height: 50px;
+        background-color: rgba(231, 229, 229, 0.5);
+        font-size: 2.75em;
+        padding: 0.5em;
+        color: rgb(216, 150, 7);
+      }
+      header span {
+        font-family: "Sacramento", cursive;
+      }
+      main {
+        position: relative;
+      }
+      main h2 {
+        position: absolute;
+        left: 20%;
+        top: 30px;
+        margin: 25px 0 200px 50px;
+        color: rgb(60, 190, 160);
+        text-transform: uppercase;
+      }
+      main #photos img {
+        margin: 0.75em;
+        border: 0.85em solid rgb(255, 255, 255);
+      }
+      section#blogposts {
+        position: absolute;
+        left: 20%;
+        top: 70px;
+        padding: 50px;
+      }
+      main .post {
+        margin: 25px;
+        padding: 25px;
+        border: 2px solid rgba(83, 78, 58, 0.6);
+        border-radius: 0.5em;
+      }
+
+      #myModal {
+        position: fixed;
+        width: 270px;
+        z-index: 1;
+        height: 380px;
+        background-color: black;
+        opacity: 0.9;
+        color: white;
+        border-radius: 20px;
+        left: 45%;
+        top: 50%;
+        margin-top: -100px;
+        margin-left: -100px;
+      }
+      #headingModal,
+      #bodyModal {
+        margin: 1.5em;
+      }
+
+      #closeInfo {
+        text-align: center;
+        margin-left: 1.7em;
+      }
+
+      .author-details {
+        display: inline-flex;
+      }
+
+      .last-seen {
+        margin: 1em 2em 0;
+      }
+
+      footer {
+        position: absolute;
+        bottom: 0;
+        height: 50px;
+        width: 100%;
+        text-align: center;
+        font-size: 0.85em;
+      }
+    </style>
+  </head>
+  <body>
+    <aside id="leftside"></aside>
+    <aside id="rightside"></aside>
+    <div id="container">
+      <header><span>Food Blog</span></header>
+
+      <main>
+        <aside id="photos">
+          <img src="images/chili.jpg" alt="White Chicken Chili" width="180" />
+        </aside>
+        <h2>Comments</h2>
+
+        <section id="blogposts">
+          <div class="post">
+            <div class="author-details">
+              <img
+                left
+                v-bind:src="src"
+                @click="showdata(0)"
+                alt="Left image"
+                width="50"
+                height="50"
+              />
+              <div class="last-seen">
+                <span class="author">{{ obj1.author }}</span> —
+                <span class="date">{{ obj1.date}}</span>
+                <span class="reply">{{ reply }} </span>
+              </div>
+            </div>
+            <p>{{ obj1.paragraph }}</p>
+          </div>
+
+          <div class="post">
+            <div class="author-details">
+              <img
+                @click="showdata(1)"
+                left
+                v-bind:src="src"
+                alt="Left image"
+                width="50"
+                height="50"
+              />
+              <div class="last-seen">
+                <span class="author">{{ obj2.author }}</span> —
+                <span class="date">{{ obj2.date}}</span>
+                <span class="reply">{{ reply }} </span>
+              </div>
+            </div>
+            <p>{{ obj2.paragraph }}</p>
+          </div>
+
+          <div class="post">
+              <div class="author-details">
+            <img
+              @click="showdata(2)"
+              left
+              v-bind:src="src"
+              alt="Left image"
+              width="50"
+              height="50"
+            />
+            <div class="last-seen">
+            <span class="author">{{ obj3.author }}</span> —
+            <span class="date">{{ obj3.date}}</span>
+            <span class="reply">{{ reply }} </span>
+            </div>
+            </div>
+            <p>{{ obj3.paragraph }}</p>
+          </div>
+
+          <div class="post">
+              <div class="author-details">
+            <img
+              @click="showdata(3)"
+              left
+              v-bind:src="src"
+              alt="Left image"
+              width="50"
+              height="50"
+            />
+            <div class="last-seen">
+            <span class="author">{{ obj4.author }}</span> —
+            <span class="date">{{ obj4.date}}</span>
+            <span class="reply">{{ reply }} </span>
+            </div>
+            </div>
+            <p>{{ obj4.paragraph }}</p>
+          </div>
+        </section>
+
+        <div id="myModal" v-if="show">
+          <h3 style="margin-bottom: 0px">
+            <span v-on:click="hidedata" style="margin-left: 12.5em"
+              >&times;</span
+            >
+          </h3>
+          <h3 id="headingModal" style="margin-top: 0px">{{ title }}</h3>
+
+          <p id="bodyModal"><b>Foodie Level: </b>{{ level}}</p>
+          <p id="bodyModal" style="margin-bottom: 0px"><b>Bio: </b></p>
+          <p style="margin: 0 1.5em 2em">{{bio}}</p>
+          <button id="closeInfo" v-on:click="hidedata">Close</button>
+        </div>
+      </main>
+
+      <footer>&copy; Copyright FOOD BLOG</footer>
+    </div>
+
+    <script>
+      var container = new Vue({
+        el: "#container",
+        data: {
+          src: "profile.png",
+          show: false,
+          obj1: {
+            author: "Brianna",
+            date: "February 18, 2021 @ 3:30 pm",
+            paragraph:
+              "Was amazing! My Walmart didn’t have coriander in stock and didn’t have ground cumin. I used serrano instead of jalapeño. It was just like my favorite tortilla soup from BJs. I am sending this recipe to my family. I want everyone to try it!",
+          },
+          obj2: {
+            author: "LINH",
+            date: "February 15, 2021 @ 9:46 am",
+            paragraph:
+              "I just made this soup today and it’s so tasty! didn’t have corn at home but still turned out very good.  It’s a winner!  I made beef chili for my parents; but since my dad has gout he can’t eat beef; this white chicken chili is perfect for him.  Thank you Lisa!",
+          },
+          obj3: {
+            author: "CATHERINE LEONARDO",
+            date: "February 13, 2021 @ 12:58 pm",
+            paragraph:
+              "I LOVE this White Chicken Chili! You are right, it is satiating meal—delicious with toasted bread. Refreshingly different taste than any chicken chili I’ve made in the past. I made it exactly as written and added some chopped zucchini, carrots, and celery. Instead of shredding the chicken, I chopped it into small pieces. It freezes very well. Will be an all-time favorite, for sure.",
+          },
+          obj4: {
+            author: "KALI",
+            date: "February 13, 2021 @ 11:31 am",
+            paragraph:
+              "This recipe is dynamite! My partner usually won’t eat beans but he finished the whole pot (darn was hoping to have some for leftovers haha). This is crowd-pleaser that I am going to add to my regular recipe rotation. Thanks so much, Lisa!",
+          },
+          reply: "REPLY",
+          modalData: [
+            {
+              name: "Brianna",
+              rate: "Novice",
+              description:
+                "Food enthusiast. Love to cook and experiment. Into only organic, fat free, sugar free stuffs!",
+            },
+            {
+              name: "LINH",
+              rate: "Newcomer",
+              description:
+                "Love food! Grew up with meat and potatoes. Recently venture outside my comfort zone. Loving everything I have been eating so far. Thai is my favorite at this time.",
+            },
+            {
+              name: "CATHERINE LEONARDO",
+              rate: "Mentor",
+              description:
+                "I have to say I never was the adventurous type until 2 years ago. My boyfriend, who is of Japanese background, exposed me to other cultural food and I have never look back since!",
+            },
+            {
+              name: "KALI",
+              rate: "Novice",
+              description:
+                "Food is my passion. So is cooking. I love to experiment and try new things. I have to admit I'm a food whore! Invite me over for dinner and I'll be there!",
+            },
+          ],
+        },
+        components: {
+          comments: {
+            tempelate: "<h2>Comments</h2>",
+          },
+          foodblog: {
+            tempelate: "<span>Food Blog </span>",
+          },
+        },
+        methods: {
+          showdata: function (param) {
+            this.show = true;
+            this.title = this.modalData[param].name;
+            this.level = this.modalData[param].rate;
+            this.bio = this.modalData[param].description;
+          },
+          hidedata: function () {
+            this.show = false;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
